@@ -3,6 +3,8 @@ import numpy as np
 import torch
 from utils import get_dataset, get_net, get_strategy
 from pprint import pprint
+import pickle
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--seed', type=int, default=1, help="random seed")
@@ -47,11 +49,14 @@ print(f"number of unlabeled pool: {dataset.n_pool-args.n_init_labeled}")
 print(f"number of testing pool: {dataset.n_test}")
 print()
 
+accuracy = []
 # round 0 accuracy
 print("Round 0")
 strategy.train()
 preds = strategy.predict(dataset.get_test_data())
+accuracy.append(dataset.cal_test_acc(preds))
 print(f"Round 0 testing accuracy: {dataset.cal_test_acc(preds)}")
+
 
 for rd in range(1, args.n_round+1):
     print(f"Round {rd}")
@@ -65,4 +70,10 @@ for rd in range(1, args.n_round+1):
 
     # calculate accuracy
     preds = strategy.predict(dataset.get_test_data())
+    accuracy.append(dataset.cal_test_acc(preds))
+
     print(f"Round {rd} testing accuracy: {dataset.cal_test_acc(preds)}")
+
+with open(args.strategy_name + '.pickle', 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(accuracy, f, pickle.HIGHEST_PROTOCOL)
