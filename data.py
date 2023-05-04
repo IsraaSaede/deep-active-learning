@@ -44,6 +44,17 @@ def get_MNIST(handler):
     raw_test = datasets.MNIST('./data/MNIST', train=False, download=True)
     return Data(raw_train.data[:40000], raw_train.targets[:40000], raw_test.data[:40000], raw_test.targets[:40000], handler)
 
+def get_UnbalancedMNIST(handler):
+    raw_train = datasets.MNIST('./data/MNIST', train=True, download=True)
+    raw_test = datasets.MNIST('./data/MNIST', train=False, download=True)
+    X_train = raw_train.data
+    Y_train = raw_train.targets
+    X_train = X_train[(Y_train==1)][:5000]+ X_train[(Y_train==7)][:1000]
+    Y_train = Y_train[(Y_train == 1)][:5000] + Y_train[(Y_train == 7)][:1000]
+    X_test = raw_test.data[((raw_test.targets ==1))]+raw_test.data[((raw_test.targets ==7))]
+    Y_test = raw_test.targets[((raw_test.targets == 1))] + raw_test.targets[((raw_test.targets == 7))]
+    return Data(X_train, Y_train, X_test, Y_test, handler)
+
 def get_FashionMNIST(handler):
     raw_train = datasets.FashionMNIST('./data/FashionMNIST', train=True, download=True)
     raw_test = datasets.FashionMNIST('./data/FashionMNIST', train=False, download=True)
