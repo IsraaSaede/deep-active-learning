@@ -53,6 +53,7 @@ def get_UnbalancedMNIST(handler):
     Y_train = torch.cat((Y_train[(Y_train == 1)][:5000], Y_train[(Y_train == 7)][:1000]), 0)
     X_test = torch.cat((raw_test.data[((raw_test.targets ==1))], raw_test.data[((raw_test.targets ==7))]), 0)
     Y_test = torch.cat((raw_test.targets[((raw_test.targets == 1))], raw_test.targets[((raw_test.targets == 7))]), 0)
+    print(Y_test.shape)
     return Data(X_train, Y_train, X_test, Y_test, handler)
 
 def get_FashionMNIST(handler):
