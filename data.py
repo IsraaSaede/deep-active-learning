@@ -49,10 +49,10 @@ def get_UnbalancedMNIST(handler):
     raw_test = datasets.MNIST('./data/MNIST', train=False, download=True)
     X_train = raw_train.data
     Y_train = raw_train.targets
-    X_train = X_train[(Y_train==1)][:5000]+ X_train[(Y_train==7)][:1000]
-    Y_train = Y_train[(Y_train == 1)][:5000] + Y_train[(Y_train == 7)][:1000]
-    X_test = raw_test.data[((raw_test.targets ==1))]+raw_test.data[((raw_test.targets ==7))]
-    Y_test = raw_test.targets[((raw_test.targets == 1))] + raw_test.targets[((raw_test.targets == 7))]
+    X_train = torch.cat(X_train[(Y_train==1)][:5000], X_train[(Y_train==7)][:1000])
+    Y_train = torch.cat(Y_train[(Y_train == 1)][:5000], Y_train[(Y_train == 7)][:1000])
+    X_test = torch.cat(raw_test.data[((raw_test.targets ==1))], raw_test.data[((raw_test.targets ==7))])
+    Y_test = torch.cat(raw_test.targets[((raw_test.targets == 1))], raw_test.targets[((raw_test.targets == 7))])
     return Data(X_train, Y_train, X_test, Y_test, handler)
 
 def get_FashionMNIST(handler):
