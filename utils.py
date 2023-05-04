@@ -1,7 +1,7 @@
 from torchvision import transforms
 from handlers import MNIST_Handler, SVHN_Handler, CIFAR10_Handler
 from data import get_MNIST, get_UnbalancedMNIST, get_FashionMNIST, get_SVHN, get_CIFAR10
-from nets import Net, MNIST_Net, SVHN_Net, CIFAR10_Net
+from nets import Net, MNIST_Net, UnbalancedMNIST_Net, SVHN_Net, CIFAR10_Net
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                              LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
                              KMeansSampling, KCenterGreedy, BALDDropout, \
@@ -64,7 +64,7 @@ def get_net(name, device):
     if name == 'MNIST':
         return Net(MNIST_Net, params[name], device)
     elif name == 'UnbalancedMNIST':
-        return Net(MNIST_Net, params[name], device)
+        return Net(UnbalancedMNIST_Net, params[name], device)
     elif name == 'FashionMNIST':
         return Net(MNIST_Net, params[name], device)
     elif name == 'SVHN':
