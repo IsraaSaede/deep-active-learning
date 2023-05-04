@@ -1,6 +1,6 @@
 from torchvision import transforms
 from handlers import MNIST_Handler, SVHN_Handler, CIFAR10_Handler
-from data import get_MNIST, get_FashionMNIST, get_SVHN, get_CIFAR10
+from data import get_MNIST, get_UnbalancedMNIST, get_FashionMNIST, get_SVHN, get_CIFAR10
 from nets import Net, MNIST_Net, SVHN_Net, CIFAR10_Net
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                              LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
