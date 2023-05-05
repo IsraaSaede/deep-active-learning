@@ -15,7 +15,7 @@ class Net:
     def train(self, data):
         n_epoch = self.params['n_epoch']
         self.clf = self.net().to(self.device)
-        self.clf.train()
+        # self.clf.train()
         optimizer = optim.SGD(self.clf.parameters(), **self.params['optimizer_args'])
 
         loader = DataLoader(data, shuffle=True, **self.params['train_args'])
