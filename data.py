@@ -26,6 +26,7 @@ class Data:
     
     def get_labeled_data(self):
         labeled_idxs = np.arange(self.n_pool)[self.labeled_idxs]
+        print(labeled_idxs)
         return labeled_idxs, self.handler(self.X_train[labeled_idxs], self.Y_train[labeled_idxs])
     
     def get_unlabeled_data(self):
