@@ -186,7 +186,7 @@ extra functions for nlp data creation
 
 class MovieReview_Net(nn.Module):
     def __init__(self, max_tokens, max_len):
-        super(MovieReview_Net, self, max_tokens, max_len).__init__()
+        super(MovieReview_Net, self).__init__( max_tokens, max_len)
         self.vectorize_layer = nn.Sequential(
             nn.EmbeddingBag(max_tokens + 1, embedding_dim=128, sparse=True),
             nn.BatchNorm1d(128),
