@@ -114,4 +114,4 @@ def get_MovieReview(handler):
     data_train = prepareData('./data/movie-reviews-dataset/train')
     data_test = prepareData('./data/movie-reviews-dataset/test')
 
-    return Data(data_train.data, torch.LongTensor(data_train.targets), data_test.data, torch.LongTensor(data_test.targets), handler)
+    return Data(torch.LongTensor(data_train.data), torch.LongTensor(data_train.targets), torch.LongTensor(data_test.data), torch.LongTensor(data_test.targets), handler)
