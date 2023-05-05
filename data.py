@@ -113,7 +113,6 @@ def get_MovieReview(handler):
     dload.save_unzip("https://victorzhou.com/movie-reviews-dataset.zip","./data")
     data_train = prepareData('./data/movie-reviews-dataset/train')
     data_test = prepareData('./data/movie-reviews-dataset/test')
-    print(type(data_train))
-    print(data_train.data[0])
+    print(type(data_train.data))
 
-    return Data(torch.Tensor(data_train.data), torch.Tensor(data_train.targets), torch.LongTensor(data_test.data), torch.LongTensor(data_test.targets), handler)
+    return Data(np.array(data_train.data), torch.Tensor(data_train.targets), np.array(data_test.data), torch.LongTensor(data_test.targets), handler)
