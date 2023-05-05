@@ -1,6 +1,9 @@
-import numpy as np
+import os
+import dload
 import torch
+import numpy as np
 from torchvision import datasets
+from torch.utils.data import Dataset
 
 class Data:
     def __init__(self, X_train, Y_train, X_test, Y_test, handler):
@@ -69,3 +72,45 @@ def get_CIFAR10(handler):
     data_train = datasets.CIFAR10('./data/CIFAR10', train=True, download=True)
     data_test = datasets.CIFAR10('./data/CIFAR10', train=False, download=True)
     return Data(data_train.data[:40000], torch.LongTensor(data_train.targets)[:40000], data_test.data[:40000], torch.LongTensor(data_test.targets)[:40000], handler)
+
+"""
+extra functions for nlp data creation
+"""
+
+class TextDataset(Dataset):
+    def __init__(self, root_dir):
+        self.root_dir = root_dir
+        self.data, self.targets = self._load_data()
+
+    def __getitem__(self, index):
+        text = self.data[index]
+        label = self.targets[index]
+        return text, label
+
+    def __len__(self):
+        return len(self.data)
+
+    def _load_data(self):
+        data = []
+        targets = []
+        for label in sorted(os.listdir(self.root_dir)):
+            path = os.path.join(self.root_dir, label)
+            if os.path.isdir(path):
+                for fname in sorted(os.listdir(path)):
+                    fpath = os.path.join(path, fname)
+                    with open(fpath, 'r', encoding='utf-8') as f:
+                        data.append(f.read())
+                    targets.append(int(0 if label == "neg" else 1))
+        return data, targets
+
+
+def prepareData(root_dir):
+    dataset = TextDataset(root_dir)
+    return dataset
+
+def get_MovieReview(handler):
+    dload.save_unzip("https://victorzhou.com/movie-reviews-dataset.zip","./data")
+    data_train = prepareData('./data/movie-reviews-dataset/train')
+    data_test = prepareData('./data/movie-reviews-dataset/test')
+
+    return Data(data_train.data, torch.LongTensor(data_train.targets), data_test.data, torch.LongTensor(data_test.targets), handler)

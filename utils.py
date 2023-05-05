@@ -1,7 +1,7 @@
 from torchvision import transforms
-from handlers import MNIST_Handler, SVHN_Handler, CIFAR10_Handler
-from data import get_MNIST, get_UnbalancedMNIST, get_FashionMNIST, get_SVHN, get_CIFAR10
-from nets import Net, MNIST_Net, UnbalancedMNIST_Net, SVHN_Net, CIFAR10_Net
+from handlers import MNIST_Handler, SVHN_Handler, CIFAR10_Handler, MovieReview_Handler
+from data import get_MNIST, get_UnbalancedMNIST, get_FashionMNIST, get_SVHN, get_CIFAR10, get_MovieReview
+from nets import Net, MNIST_Net, UnbalancedMNIST_Net, SVHN_Net, CIFAR10_Net, MovieReview_Net
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                              LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
                              KMeansSampling, KCenterGreedy, BALDDropout, \
@@ -31,13 +31,18 @@ params = {'MNIST':
               {'n_epoch': 20, 
                'train_args':{'batch_size': 64, 'num_workers': 1},
                'test_args':{'batch_size': 1000, 'num_workers': 1},
-               'optimizer_args':{'lr': 0.05, 'momentum': 0.3}}
+               'optimizer_args':{'lr': 0.05, 'momentum': 0.3}},
+          'MovieReview':
+              {'n_epoch': 20,
+               'train_args':{'batch_size': 64, 'num_workers': 1},
+               'test_args':{'batch_size': 1000, 'num_workers': 1},
+               'optimizer_args':{'lr': 0.05, 'momentum': 0.5}},
           }
 
 def get_handler(name):
     if name == 'MNIST':
         return MNIST_Handler
-    if name == 'UnbalancedMNIST':
+    elif name == 'UnbalancedMNIST':
         return MNIST_Handler
     elif name == 'FashionMNIST':
         return MNIST_Handler
@@ -45,6 +50,10 @@ def get_handler(name):
         return SVHN_Handler
     elif name == 'CIFAR10':
         return CIFAR10_Handler
+    elif name == 'MovieReview':
+        return MovieReview_Handler
+    else:
+        raise NotImplementedError
 
 def get_dataset(name):
     if name == 'MNIST':
@@ -57,6 +66,8 @@ def get_dataset(name):
         return get_SVHN(get_handler(name))
     elif name == 'CIFAR10':
         return get_CIFAR10(get_handler(name))
+    elif name == 'MovieReview':
+        return get_MovieReview(get_handler(name))
     else:
         raise NotImplementedError
         
@@ -71,6 +82,8 @@ def get_net(name, device):
         return Net(SVHN_Net, params[name], device)
     elif name == 'CIFAR10':
         return Net(CIFAR10_Net, params[name], device)
+    elif name == 'MovieReview':
+        return Net(MovieReview_Net, params[name], device)
     else:
         raise NotImplementedError
     

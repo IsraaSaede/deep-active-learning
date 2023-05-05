@@ -179,3 +179,30 @@ class CIFAR10_Net(nn.Module):
 
     def get_embedding_dim(self):
         return 50
+
+"""
+extra functions for nlp data creation
+"""
+
+class MovieReview_Net(nn.Module):
+    def __init__(self, max_tokens, max_len):
+        super(MovieReview_Net, self, max_tokens, max_len).__init__()
+        self.vectorize_layer = nn.Sequential(
+            nn.EmbeddingBag(max_tokens + 1, embedding_dim=128, sparse=True),
+            nn.BatchNorm1d(128),
+            nn.LSTM(128, 64, batch_first=True),
+            nn.ReLU(),
+        )
+        self.fc = nn.Linear(64, 2)
+
+    def forward(self, x):
+        # Apply the text vectorization layer to the input text
+        x = self.vectorize_layer(text)
+        # Apply the fully connected layer to the output of the text vectorization layer
+        x = self.fc(x)
+        # Apply sigmoid activation to get the final output
+        x = torch.sigmoid(x)
+        return x
+
+    def get_embedding_dim(self):
+        return 64
