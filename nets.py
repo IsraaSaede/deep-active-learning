@@ -197,12 +197,12 @@ class MovieReview_Net(nn.Module):
 
     def forward(self, x):
         # Apply the text vectorization layer to the input text
-        x = self.vectorize_layer(text)
+        e1 = self.vectorize_layer(x)
         # Apply the fully connected layer to the output of the text vectorization layer
-        x = self.fc(x)
+        x = self.fc(e1)
         # Apply sigmoid activation to get the final output
         x = torch.sigmoid(x)
-        return x
+        return x, e1
 
     def get_embedding_dim(self):
         return 64
