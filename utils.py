@@ -83,7 +83,7 @@ def get_net(name, device):
     elif name == 'CIFAR10':
         return Net(CIFAR10_Net, params[name], device)
     elif name == 'MovieReview':
-        return Net(MovieReview_Net, params[name], device)
+        return Net(MovieReview_Net(max_tokens=1000, max_len=100), params[name], device)
     else:
         raise NotImplementedError
     
