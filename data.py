@@ -102,7 +102,7 @@ class TextDataset(Dataset):
                     with open(fpath, 'r', encoding='utf-8') as f:
                         data.append(f.read())
                     targets.append(int(0 if label == "neg" else 1))
-        return data, targets
+        return np.array(data)[:, None], np.array(targets)[:, None]
 
 
 def prepareData(root_dir):
@@ -113,7 +113,5 @@ def get_MovieReview(handler):
     dload.save_unzip("https://victorzhou.com/movie-reviews-dataset.zip","./data")
     data_train = prepareData('./data/movie-reviews-dataset/train')
     data_test = prepareData('./data/movie-reviews-dataset/test')
-    print((np.array(data_train.data)[None,:]).shape)
-    print(type(data_train.targets))
-
+    print(data_train.data.shape)
     return Data(torch.as_tensor(data_train.data), torch.as_tensor(data_train.targets), torch.as_tensor(data_test.data), torch.as_tensor(data_test.targets), handler)
